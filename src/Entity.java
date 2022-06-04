@@ -5,7 +5,7 @@ public class Entity {
     private Integer id; // atribuído pelo Scheduler
     private Double creationTime; // atribuído pelo Scheduler
     private Integer priority; // sem prioridade: -1 (0: + alta e 255: + baixa)
-    // private PetriNet PetriNet; linds, tu é gay?
+    // private PetriNet PetriNet;
 
     public Entity(String name) {
 
