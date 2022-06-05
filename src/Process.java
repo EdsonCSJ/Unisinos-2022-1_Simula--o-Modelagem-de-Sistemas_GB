@@ -1,14 +1,12 @@
 package src;
 
 public class Process {
-    private String name;
     private Integer processId; // atribuído pelo Scheduler
     private double duration; // é a duração (temporal) do processo;
                              // seu valor é calculado no início da execução da execução desta instância;
     private boolean active; // processo pode ser (des)habilitado;
 
-    public Process(String name, double duration) {
-        this.name = name;
+    public Process(double duration) {
         this.duration = duration;
     }
 
@@ -28,4 +26,7 @@ public class Process {
         this.active = active;
     }
 
+    public Entity executeOnStart() {return null;}
+    
+    public void executeOnEnd() {}
 }

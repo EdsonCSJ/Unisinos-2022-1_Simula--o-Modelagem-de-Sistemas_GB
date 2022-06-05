@@ -2,13 +2,14 @@ package src;
 
 public class Entity {
     private String name;
-    private Integer id; // atribuído pelo Scheduler
+    private int id; // atribuído pelo Scheduler
     private Double creationTime; // atribuído pelo Scheduler
-    private Integer priority; // sem prioridade: -1 (0: + alta e 255: + baixa)
+    private int priority; // sem prioridade: -1 (0: + alta e 255: + baixa)
     // private PetriNet PetriNet;
 
-    public Entity(String name) {
-
+    public Entity(String name, int id) {
+        this.name = name;
+        this.id = id;
     }
 
     /*
@@ -17,11 +18,11 @@ public class Entity {
      * }
      */
 
-    public Integer getId() {
+    public int getId() {
         return this.id;
     }
 
-    public Integer getPriority() {
+    public int getPriority() {
         return this.priority;
     }
 
@@ -31,12 +32,10 @@ public class Entity {
 
     public double getTimeSinceCreation() {
         return this.creationTime;
-    }
+    }   
 
     // getSets():EntitySet List  retorna lista de EntitySets nas quais a entidade
     // está inserida
 
-    // getSets():EntitySet List  retorna lista de EntitySets nas quais a entidade
-    // está inserida
 
 }

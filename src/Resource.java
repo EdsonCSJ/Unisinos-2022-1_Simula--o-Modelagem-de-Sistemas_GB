@@ -2,28 +2,27 @@ package src;
 
 public class Resource {
     private String name;
-    private Integer id; // atribuído pelo Scheduler
-    private Integer quantity; // quantidade de recursos disponíveis
+    private int id; // atribuído pelo Scheduler
+    private int quantity; // quantidade de recursos total
+    private int currentQuantity; // quantidade de recursos atual
 
-    public Resource(String name, Integer quantity) {
+    public Resource(String name, int quantity) {
         this.name = name;
         this.quantity = quantity;
     }
 
-    public boolean allocate(Integer quantity) {
-        // ****** MUDAR */
-        return true;
+    public boolean allocate(int quantity) {
+        if (this.quantity <= quantity) {
+            this.currentQuantity -= quantity;
+            return true;
+        }
+        return false;
     }
 
-    public void release(Integer quantity) {
-
+    public void release(int quantity) {
+        currentQuantity += quantity;
+        if (currentQuantity > this.quantity)
+            currentQuantity = this.quantity;
     }
 
-    public double allocationRate() {
-
-    }
-
-    public double averageAllocation() {
-
-    }
 }
