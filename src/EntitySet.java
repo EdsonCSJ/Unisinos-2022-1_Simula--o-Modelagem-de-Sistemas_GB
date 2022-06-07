@@ -37,12 +37,14 @@ public class EntitySet {
     }
 
     public Entity remove() { // similar a dequeue ou pop...
+        this.size--;
         return entityList.remove(0);
     }
 
     public Entity removeById(int id) {
         for (Entity entity : entityList) {
             if (entity.getId() == id) {
+                this.size--;
                 Entity aux = entity;
                 entityList.remove(entity);
                 return aux;

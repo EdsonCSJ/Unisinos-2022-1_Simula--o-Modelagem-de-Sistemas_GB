@@ -1,12 +1,14 @@
 package src;
 
-public class OrderingProcess extends Process {
+public class OrderingProcess extends Event {
 
+	private double duration;
 	private EntitySet cashierQueue;
 	private Resource clerks;
 
-	public OrderingProcess(double duration, Resource clerks, EntitySet cashierQueue) {
-		super(duration);
+	public OrderingProcess(String name, double duration, Resource clerks, EntitySet cashierQueue) {
+		super(name);
+		this.duration = duration;
 		this.clerks = clerks;
 		this.cashierQueue = cashierQueue;
 	}
@@ -15,8 +17,7 @@ public class OrderingProcess extends Process {
 		return this.cashierQueue;
 	}
 
-	@Override
-	public Entity executeOnStart() {
+	public Entity execute() {
 		if (!cashierQueue.isEmpty()) {
 			if (clerks.allocate(1)) {
 				return cashierQueue.remove();
