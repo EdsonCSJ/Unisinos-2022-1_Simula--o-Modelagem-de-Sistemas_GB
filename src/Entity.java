@@ -26,16 +26,19 @@ public class Entity {
         return this.priority;
     }
 
+    public String getName() {
+        return this.name;
+    }
+
     public void setPriority(int priority) {
         this.priority = priority;
     }
 
     public double getTimeSinceCreation() {
         return this.creationTime;
-    }   
+    }
 
     // getSets():EntitySet List  retorna lista de EntitySets nas quais a entidade
     // está inserida
-
 
 }
