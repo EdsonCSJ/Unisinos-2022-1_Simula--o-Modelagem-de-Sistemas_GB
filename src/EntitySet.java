@@ -80,6 +80,10 @@ public class EntitySet {
         return null;
     }
 
+    public Entity getFirst() {
+        return entityList.get(0);
+    }
+
     public boolean isEmpty() {
         return entityList.isEmpty();
     }

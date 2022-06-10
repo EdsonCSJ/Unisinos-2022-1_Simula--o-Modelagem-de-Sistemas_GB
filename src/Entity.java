@@ -34,7 +34,7 @@ public class Entity {
         this.priority = priority;
     }
 
-    public double getTimeSinceCreation() {
+    public double getCreationTime() {
         return this.creationTime;
     }
 

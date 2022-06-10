@@ -3,10 +3,19 @@ package src;
 public class Clients extends Entity{
 
     private int groupSize;
+    private boolean areEating;
     
     public Clients(String name, int id) {
         super(name, id);
         setRandGroupSize();
+    }
+
+    public boolean getAreEating() {
+        return areEating;
+    }
+
+    public void getAreEating(boolean areEating) {
+        this.areEating = areEating;
     }
 
     public int getGroupSize() {
