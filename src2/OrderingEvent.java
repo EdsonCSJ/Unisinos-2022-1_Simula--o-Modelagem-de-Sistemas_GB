@@ -59,13 +59,13 @@ public class OrderingEvent {
 	}
 
 	public void atendClient() {
-		if (!cashierQueues[0].isEmpty() || !cashierQueues[1].isEmpty()) {
+		if ((!cashierQueues[0].isEmpty() || !cashierQueues[1].isEmpty()) && !isAttending) {
 			if (clerks.allocate(1)) {
 				System.out.println("Clientes sendo atendidos ");
 				this.isAttending = true;
-			} else {
-				System.out.println("Por favor espere na fila!");
 			}
+		} else {
+			System.out.println("Por favor espere na fila!");
 		}
 	}
 

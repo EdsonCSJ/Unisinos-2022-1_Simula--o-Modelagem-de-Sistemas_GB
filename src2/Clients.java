@@ -3,7 +3,8 @@ package src2;
 public class Clients extends Entity{
 
     private int groupSize;
-    private boolean areEating;
+    private boolean areEating = false;
+    private double eatingTime;
     
     public Clients(int id, double creationTime) {
         super(id, creationTime);
@@ -14,7 +15,7 @@ public class Clients extends Entity{
         return areEating;
     }
 
-    public void getAreEating(boolean areEating) {
+    public void setAreEating(boolean areEating) {
         this.areEating = areEating;
     }
 

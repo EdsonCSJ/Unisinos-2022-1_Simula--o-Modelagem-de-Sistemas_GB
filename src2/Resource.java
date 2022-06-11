@@ -11,6 +11,7 @@ public class Resource {
         this.name = name;
         this.id = id;
         this.quantity = quantity;
+        this.currentQuantity = quantity;
     }
 
     public boolean allocate(int quantity) {
