@@ -17,7 +17,7 @@ public class ClientsArrival extends Event {
     /* Agenda próxima chegada */
     s.scheduleIn(s.createEvent("ClientsArrival"), s.fakeExponential(3.00));
 
-    Clients clients = new Clients(3, s.getTime());
+    Clients clients = new Clients(this.eventId, s.getTime());
 
     /* Agenda início do atendimento */
     if (s.getResource(0).isAvailable()) {

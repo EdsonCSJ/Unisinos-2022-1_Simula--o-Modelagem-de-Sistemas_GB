@@ -1,7 +1,6 @@
 package engine.restaurant.events;
 
 import engine.Event;
-import engine.EntitySet;
 import engine.Scheduler;
 import engine.Resource;
 import engine.restaurant.entities.Clients;
@@ -17,12 +16,12 @@ public class StartOrder extends Event {
     this.resource = resource;
   }
 
-  public void Execute() {
+  public void execute() {
     /* Agenda a finalização do atendimento */
     Scheduler s = this.scheduler;
     resource.allocate(1);
     FinishOrder ss = new FinishOrder(s.getAndIncrementCurrentEventId(), s, this.clients, this.resource);
-    s.scheduleIn(ss, s.fakeExponential(6.00));
+    s.scheduleIn(ss, s.fakeExponential(8.00));
   }
 
 }

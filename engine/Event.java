@@ -2,7 +2,7 @@ package engine;
 
 public class Event {
 
-  private int eventId;
+  protected int eventId;
   protected Scheduler scheduler;
   
 
