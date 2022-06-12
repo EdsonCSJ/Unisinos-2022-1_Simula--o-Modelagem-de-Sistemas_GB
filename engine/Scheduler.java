@@ -1,13 +1,14 @@
 package engine;
 
-import java.util.List;
+import java.util.*;
 
 import engine.restaurant.OrderingEvent;
 import engine.restaurant.SeatingEvent;
+import engine.restaurant.events.ClientsArrival;
+import engine.restaurant.events.StartOrder;
 import engine.restaurant.Clients;
 import engine.restaurant.KitchenEvent;
 import engine.restaurant.Order;
-import engine.restaurant.ClientsArrival;
 
 public class Scheduler {
 
@@ -15,14 +16,39 @@ public class Scheduler {
   public double executionMaxTime = 180;
   public List<TimedEvent> eventList;
 
+  public Scheduler() {
+    this.eventList = new ArrayList<>();
+    this.resourceList = new ArrayList<>();
+    this.entitySetList = new ArrayList<>();
+  }
+
   public double getTime() {
     return this.time;
   }
 
+  public Double geraRandom() {
+    Double semente = Math.floor(Math.random() * (9999 - 1000 + 1));
+    String aux;
+
+    for (int i = 0; i < 4; i++) {
+      semente *= semente;
+
+      aux = Double.toString(semente);
+      System.out.println(semente);
+      semente = Double.parseDouble(aux.substring(3, 7));
+
+
+    }
+
+    double d = semente / 9999.0;
+
+    return d;
+  }
+
   public double normalDist(int media, int desvio) {
     double res = 0;
-    double rand1 = 0;
-    double rand2 = 0;
+    double rand1 = geraRandom();
+    double rand2 = geraRandom();
     double w = 2;
     double y = 0;
     double var = 0;
@@ -64,8 +90,6 @@ public class Scheduler {
     while (time < 180) {
       if (oe.clientsArrival(1, time))
         oe.setTimeToArrival(time + 3);
-      if (!oe.getIsAttending())
-        oe.setDuration(time + 8);
       oe.atendClient();
       Clients c = (Clients) oe.sendToTable(time);
       if (c != null) {
@@ -92,9 +116,45 @@ public class Scheduler {
   }
 
   private int currentEventId = 0;
+  private int currentResourceId = 0;
+  private int currentEntitySetId = 0;
+  public List<Resource> resourceList;
+  public List<EntitySet> entitySetList;
 
   public int getCurrentEventId() {
     return this.currentEventId;
+  }
+
+  public int getAndIncrementCurrentEventId() {
+    return this.currentEventId++;
+  }
+
+  public int getCurrentResourceId() {
+    return this.currentResourceId;
+  }
+
+  public int getCurrentEntitySetId() {
+    return this.currentEntitySetId;
+  }
+
+  public int createEntitySet(String mode, int maxPossibleSize) {
+    EntitySet entitySet = new EntitySet(mode, maxPossibleSize);
+    this.entitySetList.add(entitySet);
+    return this.currentEntitySetId++;
+  }
+
+  public EntitySet getEntitySet(int entitySetId) {
+    return entitySetList.get(entitySetId);
+  }
+
+  public int createResource(String name, int quantity) {
+    Resource resource = new Resource(name, currentResourceId++, quantity);
+    this.resourceList.add(resource);
+    return this.currentResourceId++;
+  }
+
+  public Resource getResource(int resourceId) {
+    return resourceList.get(resourceId);
   }
 
   public void scheduleNow(Event event) {
@@ -110,7 +170,7 @@ public class Scheduler {
   }
 
   public Event createEvent(String name) {
-    if (name == "ClientArrival") {
+    if (name == "ClientsArrival") {
       ClientsArrival ca = new ClientsArrival(currentEventId, this);
       return ca;
     }
@@ -126,24 +186,36 @@ public class Scheduler {
       return null;
     }
 
-    Event nextEvent = new Event();
-    Double nextEventExecutionTime = Double.MAX_VALUE;
+    TimedEvent nextTimedEvent = new TimedEvent(new Event(), Double.MAX_VALUE);
     for (TimedEvent timedEvent : eventList) {
-      if (timedEvent.getExecutionTime() < nextEventExecutionTime) {
-        nextEvent = timedEvent.getEvent();
-        nextEventExecutionTime = timedEvent.getExecutionTime();
+      if (timedEvent.getExecutionTime() < nextTimedEvent.getExecutionTime()) {
+        nextTimedEvent = timedEvent;
       }
     }
-
-    if (nextEventExecutionTime > this.time) {
-      this.time = nextEventExecutionTime;
+    Double nextExecutionTime = nextTimedEvent.getExecutionTime();
+    if (nextExecutionTime > this.time) {
+      this.time = nextExecutionTime;
     }
-
-    return nextEvent;
+    this.eventList.remove(nextTimedEvent);
+    return nextTimedEvent.getEvent();
   }
 
   public void simulate2() {
-    startArrival("ClientArrival");
+
+    createResource("Caixa 1", 1);
+    createEntitySet("FIFO", 100);
+    createResource("Caixa 2", 1);
+    createEntitySet("FIFO", 100);
+    createResource("Balcão", 6);
+    createEntitySet("FIFO", 100);
+    createResource("Mesas para 2", 4);
+    createEntitySet("FIFO", 100);
+    createResource("Mesas para 4", 4);
+    createEntitySet("FIFO", 100);
+    createResource("Cozinheiros", 3);
+
+
+    startArrival("ClientsArrival");
     while (this.time < this.executionMaxTime) {
       Event event = getNextEvent();
       if (event != null) {

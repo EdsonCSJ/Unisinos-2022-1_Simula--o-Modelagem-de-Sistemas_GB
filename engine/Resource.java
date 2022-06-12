@@ -8,10 +8,10 @@ public class Resource {
   private int currentQuantity;
 
   public Resource(String name, int id, int quantity) {
-    this.name = name;
     this.id = id;
     this.quantity = quantity;
     this.currentQuantity = quantity;
+    this.name = name;
   }
 
   public boolean allocate(int quantity) {
@@ -28,4 +28,15 @@ public class Resource {
       currentQuantity = this.quantity;
   }
 
+  public boolean isAvailable() {
+    return currentQuantity > 0 ? true : false;
+  }
+
+  public int getId() {
+    return this.id;
+  }
+
+  public String getName() {
+    return this.name;
+  }
 }

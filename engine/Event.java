@@ -4,6 +4,7 @@ public class Event {
 
   private int eventId;
   protected Scheduler scheduler;
+  
 
   public Event(int id, Scheduler scheduler) {
     this.eventId = id;
