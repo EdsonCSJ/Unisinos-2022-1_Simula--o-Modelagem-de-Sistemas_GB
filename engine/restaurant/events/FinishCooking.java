@@ -23,6 +23,8 @@ public class FinishCooking extends Event {
     } else {
       EntitySet finishedOrders = s.getEntitySet(6);
       finishedOrders.insert(order);
+      System.out.println(s.time + " - " + "Evento " + this.eventId + ": Cliente " + order.getId()
+          + " Pedido esperando que o cliente sente");
     }
 
     resource.release(1);

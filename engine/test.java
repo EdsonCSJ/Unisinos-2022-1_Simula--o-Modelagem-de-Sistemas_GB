@@ -6,7 +6,8 @@ public class test {
 
         Scheduler s = new Scheduler();
 
-        s.simulate2();
+        s.simulate();
 
     }
 }
+

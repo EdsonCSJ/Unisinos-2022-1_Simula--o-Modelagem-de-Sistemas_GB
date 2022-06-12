@@ -44,7 +44,25 @@ public class FinishOrder extends Event {
       s.scheduleNow(ss);
     } else {
       EntitySet seatQueue = s.getEntitySet(table.getId());
+      System.out
+          .println(s.time + " - " + "Evento " + this.eventId
+              + ": Cliente " + clients.getId() + " esperando na fila da mesa - Recurso: " + table.getId());
       seatQueue.insert(this.clients);
+    }
+  }
+
+  private void sendOrderToKitchen(Scheduler s) {
+    Resource cooks = s.getResource(5);
+    Order order = new Order(clients.getId(), s.getTime(), clients);
+    if (cooks.isAvailable()) {
+      StartCooking sc = new StartCooking(s.getAndIncrementCurrentEventId(), s, order, cooks);
+      s.scheduleNow(sc);
+    } else {
+      EntitySet kitchenQueue = s.getEntitySet(cooks.getId());
+      System.out
+          .println(s.time + " - " + "Evento " + this.eventId
+              + ": Cliente " + clients.getId() + " - Pedido na fila da cozinha");
+      kitchenQueue.insert(order);
     }
   }
 
@@ -57,15 +75,4 @@ public class FinishOrder extends Event {
     }
   }
 
-  private void sendOrderToKitchen(Scheduler s) {
-    Resource cooks = s.getResource(5);
-    Order order = new Order(clients.getId(), s.getTime(), clients);
-    if (cooks.isAvailable()) {
-      StartCooking sc = new StartCooking(s.getAndIncrementCurrentEventId(), s, order, cooks);
-      s.scheduleNow(sc);
-    } else {
-      EntitySet kitchenQueue = s.getEntitySet(cooks.getId());
-      kitchenQueue.insert(order);
-    }
-  }
 }

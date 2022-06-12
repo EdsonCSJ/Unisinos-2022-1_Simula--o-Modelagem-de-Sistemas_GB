@@ -2,18 +2,19 @@ package engine;
 
 import java.util.*;
 
-import engine.restaurant.SeatingEvent;
 import engine.restaurant.events.ClientsArrival;
-import engine.restaurant.events.StartOrder;
-import engine.restaurant.Clients;
-import engine.restaurant.KitchenEvent;
-import engine.restaurant.Order;
 
 public class Scheduler {
 
   public double time;
   public double executionMaxTime = 180;
   public List<TimedEvent> eventList;
+  public List<Resource> resourceList;
+  public List<EntitySet> entitySetList;
+  private int currentEventId = 0;
+  private int currentResourceId = 0;
+  private int currentEntitySetId = 0;
+  private int currentClientId = 0;
 
   public Scheduler() {
     this.eventList = new ArrayList<>();
@@ -26,27 +27,45 @@ public class Scheduler {
   }
 
   public Double geraRandom() {
-    Double semente = Math.floor(Math.random() * (9999 - 1000 + 1));
+    Integer semente = 0;
+    Integer auxInt;
+    while (semente < 1000) {
+        semente = (int) Math.floor(Math.random() * (9999 - 1000 + 1));
+    }
     String aux;
+    String aux2;
 
     for (int i = 0; i < 4; i++) {
-      semente *= semente;
+        auxInt = semente * semente;
 
-      aux = Double.toString(semente);
-      System.out.println(semente);
-      semente = Double.parseDouble(aux.substring(3, 7));
+        aux = Integer.toString(auxInt);
+        aux = aux.substring(3, 7);
+        semente = Integer.parseInt(aux);
+        if (semente < 1000) {
+            aux = Integer.toString(auxInt);
+        }
+        while (semente < 1000) {
+            aux2 = "0" + aux;
+
+            aux = aux2.substring(3, 7);
+
+            semente = Integer.parseInt(aux);
+
+            aux = aux2;
+
+        }
 
     }
 
     double d = semente / 9999.0;
 
     return d;
-  }
+}
 
-  public double normalDist(int media, int desvio) {
+public double normalDist(int media, int desvio) {
     double res = 0;
-    double rand1 = geraRandom();
-    double rand2 = geraRandom();
+    double rand1;
+    double rand2;
     double w = 2;
     double y = 0;
     double var = 0;
@@ -54,11 +73,13 @@ public class Scheduler {
     double vAux2 = 0;
 
     while (w > 1) {
+        rand1 = geraRandom();
+        rand2 = geraRandom();
 
-      vAux1 = (2 * rand1) - 1;
-      vAux2 = (2 * rand2) - 1;
+        vAux1 = (2 * rand1) - 1;
+        vAux2 = (2 * rand2) - 1;
 
-      w = (Math.pow(vAux1, 2)) + (Math.pow(vAux2, 2));
+        w = (Math.pow(vAux1, 2)) + (Math.pow(vAux2, 2));
     }
 
     y = Math.sqrt((-2 * Math.log(w)) / w);
@@ -69,62 +90,14 @@ public class Scheduler {
 
     return res;
 
-  }
-
-  // public void simulate() {
-  // Resource clerks = new Resource("Clerks", 1, 2);
-  // OrderingEvent oe = new OrderingEvent("FIFO", clerks);
-  // Resource balconySeats = new Resource("Balcony Seats", 1, 6);
-  // Resource tableSeats1 = new Resource("Balcony Seats", 2, 4);
-  // Resource tableSeats2 = new Resource("Balcony Seats", 3, 4);
-  // SeatingEvent balcony = new SeatingEvent(balconySeats);
-  // SeatingEvent tablesForTwo = new SeatingEvent(tableSeats1);
-  // SeatingEvent tablesForFour = new SeatingEvent(tableSeats2);
-  // Resource cooks = new Resource("cooks", 4, 3);
-  // KitchenEvent kitchen = new KitchenEvent(cooks);
-
-  // oe.setTimeToArrival(time + 5);
-
-  // while (time < 180) {
-  // if (oe.clientsArrival(1, time))
-  // oe.setTimeToArrival(time + 3);
-  // oe.atendClient();
-  // Clients c = (Clients) oe.sendToTable(time);
-  // if (c != null) {
-  // Order newOrder = new Order(c.getId(), time, c);
-  // kitchen.insert(newOrder);
-  // int groupSize = c.getGroupSize();
-  // if (groupSize == 1) {
-  // System.out.println("inserido no balcão");
-  // balcony.insert(c);
-  // } else if (groupSize == 2) {
-  // System.out.println("inserido nas mesas de 2");
-  // tablesForTwo.insert(c);
-  // } else {
-  // System.out.println("inserido nas mesas de 4");
-  // tablesForFour.insert(c);
-  // }
-  // }
-  // kitchen.execute(time, time + 20, time + 14);
-  // balcony.execute(time);
-  // tablesForTwo.execute(time);
-  // tablesForFour.execute(time);
-  // time++;
-  // }
-  // }
-
-  private int currentEventId = 0;
-  private int currentResourceId = 0;
-  private int currentEntitySetId = 0;
-  public List<Resource> resourceList;
-  public List<EntitySet> entitySetList;
-
-  // public int getCurrentEventId() {
-  // return this.currentEventId;
-  // }
+}
 
   public int getAndIncrementCurrentEventId() {
     return this.currentEventId++;
+  }
+
+  public int getAndIncrementCurrentClientId() {
+    return this.currentClientId++;
   }
 
   public int getCurrentResourceId() {
@@ -172,6 +145,7 @@ public class Scheduler {
       ClientsArrival ca = new ClientsArrival(getAndIncrementCurrentEventId(), this);
       return ca;
     }
+    /* TODO: adicionar os outros eventos */
     return null;
   }
 
@@ -198,7 +172,7 @@ public class Scheduler {
     return nextTimedEvent.getEvent();
   }
 
-  public void simulate2() {
+  public void simulate() {
 
     createResource("Caixa 1", 1); // 0
     createEntitySet("FIFO", 100);
@@ -211,6 +185,7 @@ public class Scheduler {
     createResource("Mesas para 4", 4); // 4
     createEntitySet("FIFO", 100);
     createResource("Cozinheiros", 3); // 5
+    createEntitySet("FIFO", 100);
     createEntitySet("FIFO", 100); // Fila de pedidos prontos: ID 6
 
     startArrival("ClientsArrival");

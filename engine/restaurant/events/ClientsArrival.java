@@ -17,8 +17,9 @@ public class ClientsArrival extends Event {
     /* Agenda próxima chegada */
     s.scheduleIn(s.createEvent("ClientsArrival"), s.fakeExponential(3.00));
 
-    Clients clients = new Clients(this.eventId, s.getTime());
+    Clients clients = new Clients(s.getAndIncrementCurrentClientId(), s.getTime());
 
+    System.out.println(s.time + " - " + "Evento " + this.eventId + ": Chegada do cliente: " + clients.getId());
     /* Agenda início do atendimento */
     if (s.getResource(0).isAvailable()) {
       StartOrder ss = new StartOrder(s.getAndIncrementCurrentEventId(), s, clients, s.getResource(0));
@@ -33,8 +34,15 @@ public class ClientsArrival extends Event {
       EntitySet cashierQueue2 = s.getEntitySet(1);
       if (cashierQueue.getSize() < cashierQueue2.getSize()) {
         cashierQueue.insert(clients);
+        System.out
+            .println(s.time + " - " + "Evento " + this.eventId
+                + ": Cliente " + clients.getId() + " esperando na fila do Caixa 1");
       } else {
+        System.out
+            .println(s.time + " - " + "Evento " + this.eventId
+                + ": Cliente " + clients.getId() + " esperando na fila do Caixa 2");
         cashierQueue2.insert(clients);
+
       }
     }
   }

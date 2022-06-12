@@ -19,9 +19,11 @@ public class StartCooking extends Event {
   public void execute() {
     Scheduler s = this.scheduler;
     /* Agenda a finalização da preparação do pedido */
+    System.out
+        .println(s.time + " - " + "Evento " + this.eventId + ": Cliente " + order.getId() + " Pedido sendo preparado");
     resource.allocate(1);
     FinishCooking fc = new FinishCooking(s.getAndIncrementCurrentEventId(), s, this.order, this.resource);
-    s.scheduleIn(fc, s.fakeExponential(14.00));
+    s.scheduleIn(fc, s.normalDist(14, 5));
   }
 
 }

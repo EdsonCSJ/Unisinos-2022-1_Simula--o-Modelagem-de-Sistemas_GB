@@ -18,6 +18,11 @@ public class Seat extends Event {
     Scheduler s = this.scheduler;
     // Cliente senta
     resource.allocate(1);
+    clients.setIsSeated(true);
+    System.out
+        .println(s.time + " - " + "Evento " + this.eventId
+            + ": Cliente " + clients.getId() + " Esperando na mesa - Recurso: " + resource.getId());
+
     EntitySet finishedOrders = s.getEntitySet(6);
     for (Entity order : finishedOrders.getEntityList()) {
       Order aux = (Order) order;
