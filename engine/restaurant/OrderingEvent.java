@@ -1,4 +1,8 @@
-package src2;
+package engine.restaurant;
+
+import engine.Entity;
+import engine.EntitySet;
+import engine.Resource;
 
 public class OrderingEvent {
 

@@ -1,10 +1,9 @@
-package src2;
+package engine;
 
 public class Entity {
 
-    private int id; 
-    private double creationTime; 
-    private int priority; 
+    private int id;
+    private double creationTime;
 
     public Entity(int id, double creationTime) {
         this.id = id;
@@ -13,14 +12,6 @@ public class Entity {
 
     public int getId() {
         return this.id;
-    }
-
-    public int getPriority() {
-        return this.priority;
-    }
-
-    public void setPriority(int priority) {
-        this.priority = priority;
     }
 
     public double getCreationTime() {
