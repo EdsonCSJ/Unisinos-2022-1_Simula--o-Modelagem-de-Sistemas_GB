@@ -20,10 +20,10 @@ public class StartCooking extends Event {
     Scheduler s = this.scheduler;
     /* Agenda a finalização da preparação do pedido */
     System.out
-        .println(s.time + " - " + "Evento " + this.eventId + ": Cliente " + order.getId() + " Pedido sendo preparado");
+        .printf("%.2f - " + "Evento " + this.eventId + ": Cliente " + order.getId() + " Pedido sendo preparado\n", s.time);
     resource.allocate(1);
     FinishCooking fc = new FinishCooking(s.getAndIncrementCurrentEventId(), s, this.order, this.resource);
-    s.scheduleIn(fc, s.normalDist(14, 5));
+    s.scheduleIn(fc, s.getNumberGenerators().normalDist(14, 5));
   }
 
 }

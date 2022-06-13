@@ -72,7 +72,7 @@ public class NumberGenerators {
         Double result = 0.0;
         Double rand = geraRandom();
 
-        result = -media * Math.log(1 - rand);
+        result = (-media) * Math.log(1 - rand);
 
         return result;
     }

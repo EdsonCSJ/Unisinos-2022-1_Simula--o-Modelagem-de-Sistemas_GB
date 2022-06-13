@@ -20,8 +20,8 @@ public class Seat extends Event {
     resource.allocate(1);
     clients.setIsSeated(true);
     System.out
-        .println(s.time + " - " + "Evento " + this.eventId
-            + ": Cliente " + clients.getId() + " Esperando na mesa - Recurso: " + resource.getId());
+        .printf("%.2f - " + "Evento " + this.eventId
+            + ": Cliente " + clients.getId() + " Esperando na mesa - Recurso: " + resource.getId() + "\n", s.time);
 
     EntitySet finishedOrders = s.getEntitySet(6);
     for (Entity order : finishedOrders.getEntityList()) {

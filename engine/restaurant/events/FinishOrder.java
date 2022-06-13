@@ -45,8 +45,8 @@ public class FinishOrder extends Event {
     } else {
       EntitySet seatQueue = s.getEntitySet(table.getId());
       System.out
-          .println(s.time + " - " + "Evento " + this.eventId
-              + ": Cliente " + clients.getId() + " esperando na fila da mesa - Recurso: " + table.getId());
+          .printf("%.2f - " + "Evento " + this.eventId
+              + ": Cliente " + clients.getId() + " esperando na fila da mesa - Recurso: " + table.getId() + "\n", s.time);
       seatQueue.insert(this.clients);
     }
   }
@@ -60,8 +60,8 @@ public class FinishOrder extends Event {
     } else {
       EntitySet kitchenQueue = s.getEntitySet(cooks.getId());
       System.out
-          .println(s.time + " - " + "Evento " + this.eventId
-              + ": Cliente " + clients.getId() + " - Pedido na fila da cozinha");
+          .printf("%.2f - " + "Evento " + this.eventId
+              + ": Cliente " + clients.getId() + " - Pedido na fila da cozinha\n", s.time);
       kitchenQueue.insert(order);
     }
   }

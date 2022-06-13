@@ -15,7 +15,7 @@ public class Leave extends Event {
   public void execute() {
     Scheduler s = this.scheduler;
     // Cliente senta
-    System.out.println(s.time + " - " + this.eventId + ": Cliente deixou o restaurante");
+    System.out.printf("%.2f - Evento " + this.eventId + ": Cliente deixou o restaurante\n", s.time);
     resource.release(1);
     EntitySet tableQueue = s.getEntitySet(resource.getId());
     if (!(tableQueue.isEmpty())) {

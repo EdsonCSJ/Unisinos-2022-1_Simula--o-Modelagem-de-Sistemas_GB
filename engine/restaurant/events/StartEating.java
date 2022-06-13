@@ -21,10 +21,9 @@ public class StartEating extends Event {
             table = s.getResource(3);
         else
             table = s.getResource(4);
-        System.out
-                .println(s.time + " - " + "Evento " + this.eventId
-                        + ": Cliente " + clients.getId() + " comendo");
+        System.out.printf("%.2f - " + "Evento " + this.eventId
+                + ": Cliente " + clients.getId() + " comendo\n", s.time);
         Leave l = new Leave(s.getAndIncrementCurrentEventId(), s, table);
-        s.scheduleIn(l, s.normalDist(20, 8));
+        s.scheduleIn(l, s.getNumberGenerators().normalDist(20, 8));
     }
 }

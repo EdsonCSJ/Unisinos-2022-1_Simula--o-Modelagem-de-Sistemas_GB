@@ -1,5 +1,6 @@
 package engine;
 
+import java.io.*;
 import java.util.*;
 
 import engine.restaurant.events.ClientsArrival;
@@ -7,7 +8,7 @@ import engine.restaurant.events.ClientsArrival;
 public class Scheduler {
 
   public double time;
-  public double executionMaxTime = 180;
+  public double executionMaxTime = 1000;
   public List<TimedEvent> eventList;
   public List<Resource> resourceList;
   public List<EntitySet> entitySetList;
@@ -15,6 +16,7 @@ public class Scheduler {
   private int currentResourceId = 0;
   private int currentEntitySetId = 0;
   private int currentClientId = 0;
+  private NumberGenerators randGenerators = new NumberGenerators();
 
   public Scheduler() {
     this.eventList = new ArrayList<>();
@@ -24,6 +26,10 @@ public class Scheduler {
 
   public double getTime() {
     return this.time;
+  }
+
+  public NumberGenerators getNumberGenerators() {
+    return this.randGenerators;
   }
 
   public int getAndIncrementCurrentEventId() {
@@ -83,8 +89,8 @@ public class Scheduler {
     return null;
   }
 
-  private void startArrival(String name) {
-    scheduleIn(createEvent(name), fakeExponential(3.00));
+  public void startArrival(String name) {
+    scheduleIn(createEvent(name), randGenerators.exponencial(3));
   }
 
   private Event getNextEvent() {
@@ -108,32 +114,29 @@ public class Scheduler {
 
   public void simulate() {
 
-    createResource("Caixa 1", 1); // 0
-    createEntitySet("FIFO", 100);
-    createResource("Caixa 2", 1); // 1
-    createEntitySet("FIFO", 100);
-    createResource("Balcão", 6); // 2
-    createEntitySet("FIFO", 100);
-    createResource("Mesas para 2", 4); // 3
-    createEntitySet("FIFO", 100);
-    createResource("Mesas para 4", 4); // 4
-    createEntitySet("FIFO", 100);
-    createResource("Cozinheiros", 3); // 5
-    createEntitySet("FIFO", 100);
-    createEntitySet("FIFO", 100); // Fila de pedidos prontos: ID 6
-
-    startArrival("ClientsArrival");
     while (this.time < this.executionMaxTime) {
       Event event = getNextEvent();
       if (event != null) {
         event.execute();
+        for (int i = 0; i < 6; i++) {
+          Log(this.time, entitySetList.get(i).getSize(), "fila" + i + ".csv");
+        }
       } else {
-        System.out.println(this.time + ": Execução finalizada!");
+        System.out.printf("%.2f : Execução finalizada!\n", this.time);
+        return;
       }
     }
   }
 
-  public Double fakeExponential(Double meanValue) {
-    return meanValue;
-  }
+  public void Log(Double ent1, int ent2, String arq) {
+    String var = Math.floor(ent1) + " ; " + ent2;
+    try {
+        FileWriter file = new FileWriter(arq, true);
+        PrintWriter gravarArq = new PrintWriter(file);
+        gravarArq.println(var);
+        gravarArq.close();
+    } catch (IOException e) {
+        System.out.println(e.getMessage());
+    }
+}
 }

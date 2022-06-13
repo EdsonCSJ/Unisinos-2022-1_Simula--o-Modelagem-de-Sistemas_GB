@@ -19,12 +19,11 @@ public class StartOrder extends Event {
   public void execute() {
     /* Agenda a finalização do atendimento */
     Scheduler s = this.scheduler;
-    System.out
-        .println(s.time + " - " + "Evento " + this.eventId
-            + ": Cliente " + clients.getId() + " sendo atendido pelo caixa " + (resource.getId() + 1));
+    System.out.printf("%.2f - " + "Evento " + this.eventId
+        + ": Cliente " + clients.getId() + " sendo atendido pelo caixa " + (resource.getId() + 1) + "\n", s.time);
     resource.allocate(1);
     FinishOrder ss = new FinishOrder(s.getAndIncrementCurrentEventId(), s, this.clients, this.resource);
-    s.scheduleIn(ss, s.normalDist(8, 2));
+    s.scheduleIn(ss, s.getNumberGenerators().normalDist(8, 2));
   }
 
 }
