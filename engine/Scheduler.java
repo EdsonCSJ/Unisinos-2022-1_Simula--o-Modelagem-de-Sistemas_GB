@@ -8,7 +8,7 @@ import engine.restaurant.events.ClientsArrival;
 public class Scheduler {
 
   public double time;
-  public double executionMaxTime = 1000;
+  public double executionMaxTime = 10000;
   public List<TimedEvent> eventList;
   public List<Resource> resourceList;
   public List<EntitySet> entitySetList;

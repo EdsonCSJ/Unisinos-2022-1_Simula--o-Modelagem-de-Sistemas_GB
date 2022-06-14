@@ -16,7 +16,7 @@ public class ClientsArrival extends Event {
     Scheduler s = this.scheduler;
     if (s.getTime() < 180) {
       /* Agenda próxima chegada */
-      s.scheduleIn(s.createEvent("ClientsArrival"), s.getNumberGenerators().exponencial(3));
+      s.scheduleIn(s.createEvent("ClientsArrival"), /**s.getNumberGenerators().exponencial(3)**/0.326605);
 
       Clients clients = new Clients(s.getAndIncrementCurrentClientId(), s.getTime());
 
